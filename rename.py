@@ -9,25 +9,25 @@ gfiles = []
 def yorno(question):
     while True:
         ques = raw_input(question)
-        if ques.startswith('y') or ques.startswith('Y'):
+        if ques.lower().startswith('y'):
             return 'yes'
-        elif ques.startswith('n') or ques.startswith('N'):
+        elif ques.lower().startswith('n'):
             return 'no'
         else:
             print 'Enter Y or y for yes, N or n for no.'
 
 def addTo():
-    '''Add .jpg's to jfiles list, .gif's to gfiles list'''
-    negs = 0
+    negs = []
     for filename in os.listdir('.'):
-        if filename.endswith('.jpg') or filename.endswith('.JPG'):
+        if filename.lower().endswith('.jpg') or filename.lower().endswith('.jpeg'):
             jfiles.append(filename)
-        elif filename.endswith('.gif') or filename.endswith('.GIF'):
+        elif filename.lower().endswith('.gif'):
             gfiles.append(filename)
         else:
-            negs += 1
-    print
-    print 'Non .jpg / .gif files:', negs 
+            negs.append(filename)
+    print 'Files that will not be renamed:'
+    for i in negs:
+        print i
 
 def nameMaker():
     newout = ''
@@ -38,16 +38,16 @@ def nameMaker():
     return newout
 
 def myRen():
-    prevans = yorno('Rename all .jpg & .gif files? (Y/y or N/n?) ') 
-    print
+    prevans = yorno('Rename all jpeg and gif files? (Y/y or N/n?) ') 
+    print 'Files renamed (before > after):'
     if prevans == 'yes': 
         for i in jfiles:
             newfname = nameMaker() + '.jpg'
-            print '%-12s > %12s' % (i[:12], newfname)
+            print '%-14s > %12s' % (i[:12], newfname)
             os.rename(i, newfname)
         for i in gfiles:
             newfname = nameMaker() + '.gif'
-            print '%-12s > %12s' % (i[:12], newfname)
+            print '%-14s > %12s' % (i[:12], newfname)
             os.rename(i, newfname)
         print
     elif prevans == 'no':
