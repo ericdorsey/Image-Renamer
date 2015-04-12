@@ -1,16 +1,54 @@
-### rename.py
+# rename.py
 
-**Description:**
-Renames all files with .jpg, .jpeg, .gif extensions (upper or lowercase) to random combinations of two letters and four numbers (xx1234). Useful for making random assortment of images for slidehows, digital photo frames, etc.
+### Description
 
-Files without .jpg or .gif extensions are excluded. Before renaming, lists number of non image files found and asks user for confirmation. Outputs to screen `original filename -> new filename` in a list to user.   
+Renames all image files with `.jpg` / `.jpeg`, `.png`, `.gif` extensions (upper or lowercase) to a 10 character long combination of random letters and numbers, example: `r7uh17i986.jpg`
+ 
+Useful for making random assortment of images for slideshows, digital photo frames, etc.
 
-**Requirements:**
-Python 2.7
+Files without above image extensions are excluded. 
 
-**Directions:**
-Place rename.py in directory with image files to be renamed, then run rename.py:
+Before renaming, lists number of non image files found and asks user for confirmation before proceeding. Outputs to screen:
 
-`$ python rename.py`
+`original image filename --> new image filename`   
+
+### Usage
+
+Place images you want to rename in same directory as `rename.py`, then run rename.py:
+
+Linux / OSX: 
+
+```
+$ ./rename.py
+```
+
+Windows:
+
+```
+$ python rename.py
+```
+
+##### Fake Image Testing
+
+`fake_images/` Contains code for testing w/ generated fake (0 bytes) images. To test create fake images:
+
+```
+$ python fake_images/make_fake_images.py
+```
+
+To clean them up:
+
+```
+$ python fake_images/cleanup_fake_images.py
+```
+
+### Compatibility
+
+* Python 2.7.x
+* Python 3.4.x
+
+
+
+ 
 
 
