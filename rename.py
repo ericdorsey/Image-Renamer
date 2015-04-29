@@ -3,6 +3,7 @@ from __future__ import print_function  # Force use print()
 import random
 import os
 import sys
+import argparse
 
 # Python 3 compatibility
 try:
@@ -88,7 +89,7 @@ def random_name_maker():
     return new_out
 
 
-def main(negs):
+def main(negs, dry_run):
     """
     Main application function.
 
@@ -98,13 +99,17 @@ def main(negs):
     if not len(gif_files) == 0 \
             or not len(jpg_files) == 0 \
             or not len(png_files) == 0:
+        print("\nImage Files Found:\n")
         for i in gif_files, jpg_files, png_files:
             for j in i:
                 print(j)
         files_to_rename = len(gif_files) + len(jpg_files) + len(png_files)
-        ans = yes_or_no(
-            '\nRename all {0} .gif, .png and .jpg files above? Y/y or N/n: '.
-            format(files_to_rename))
+        if dry_run == False:
+            ans = yes_or_no(
+                '\nRename all {0} .gif, .png and .jpg files above? Y/y or N/n: '.
+                format(files_to_rename))
+        else:
+            ans = True
         if ans:
             if not negs == False:
                 print("\nUnaffected files/folders:\n")
@@ -112,7 +117,10 @@ def main(negs):
                     print(i)
             else:
                 print("\nNo non-image files in current dir.")
-            print('\nFiles renamed (before --> after):\n')
+            if dry_run == False:
+                print('\nFiles renamed (before --> after):\n')
+            if dry_run == True:
+                print('\nExample of how files would be renamed (before --> after):\n')
             for i in gif_files, jpg_files, png_files:
                 for j in i:
                     if j.endswith('gif'):
@@ -122,7 +130,8 @@ def main(negs):
                     if j.endswith('png'):
                         new_filename = random_name_maker() + '.png'
                     print('{0} --> {1}'.format(j, new_filename))
-                    os.rename(j, new_filename)
+                    if dry_run == False:
+                        os.rename(j, new_filename)
             print("")
         else:
             print('\nQuitting.')
@@ -131,8 +140,15 @@ def main(negs):
         sys.exit("\nNo image files in current dir. Quitting.\n")
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description="Image Renamer")
+    parser.add_argument("-d", "--dryrun",
+                        help="Show example dry run (image filenames not changed)",
+                        action="store_true",
+                        required=False)
+    args = parser.parse_args()
     try:
+        dry_run = args.dryrun
         negs = collect_image_files()
-        main(negs)
+        main(negs, dry_run)
     except KeyboardInterrupt:
         print("\nExit per user (CTRL-C detected) ..")
